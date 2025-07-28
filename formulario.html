@@ -1,65 +1,40 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario</title>
-</head>
-<body>
-    <h2> Vista de formulario</h2>
-    <a href="/consulta"> Abrir Vista Consulta</a>
+{% extends "plantillas.html" %}
 
-    <br>
-    <br>
-    <br>
-    <br>
+{% block body %}
 
-        {% with mensajes= get_flashed_messages()%}
-            {% if mensajes%}
-                {% for msj in mensajes%}
-                    <h4>{{ msj }}</h4>
-                {% endfor %}
-            {% endif %}
-        {% endwith%}
 
-    <form action="/guardarAlbum" method="post">
-        <input type="text" name="txtTitulo" placeholder="Titulo" value="{{ request.form.txtTitulo}}">
-        {% if errores and errores.txtTitulo %}
-        <p style="color:red">{{ errores.txtTitulo }}</p>
-        {% endif %}
-        <input type="text" name="txtArtista" placeholder="Artista" value="{{ request.form.txtArtista}}">
-        {% if errores and errores.txtArtista %}
-        <p style="color:red">{{ errores.txtArtista }}</p>
-        {% endif %}
-        <input type="number" name="txtAnio" placeholder="Año de publicacion" value="{{ request.form.txtAnio}}">
-        {% if errores and errores.txtAnio %}
-        <p style="color:red">{{ errores.txtAnio }}</p>
-        {% endif %}
-        <button type="submit"> Guardar Album</button>
-    </form>
+<h2>Registro de Album</h2>
+<br>
+{% with mensajes = get_flashed_messages() %}
+{% if mensajes %}
+    <div class="alert alert-info">
+        <ul>
+        {% for mensaje in mensajes %}
+            <li>{{ mensaje }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endwith %}
 
-    <br>
 
-    <h2 style="color:blueviolet"> Albums Guardados</h2>
+<from method="POST" action="{{ url_for('album.registrar') }}" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre del Album</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" required>
+    </div>
+    <div class="mb-3">
+        <label for="artista" class="form-label">Artista</label>
+        <input type="text" class="form-control" id="artista" name="artista" required>
+    </div>
+    <div class="mb-3">
+        <label for="genero" class="form-label">Género</label>
+        <input type="text" class="form-control" id="genero" name="genero" required>
+    </div>
+    <div class="mb-3">
+        <label for="fecha_lanzamiento" class="form-label">Año</label>
+        <input type="date" class="form-control" id="fecha_lanzamiento" name="fecha_lanzamiento" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Registrar Album</button>
 
-    <table>
-        <thead>
-            <tr>
-                <td>ID:</td>
-                <td>Album:</td>
-            </tr>
-        </thead>
 
-        <tbody>
-
-            {%for alb in albums%}
-            <tr>
-                <td>{{ alb.0 }}</td>
-                <td> <a href="/detalle/{{ alb.0 }}"> {{ alb.1 }} </a> </td>
-            </tr>
-            {%endfor%}
-
-        </tbody>
-    </table>
-</body>
-</html>
+    <div
