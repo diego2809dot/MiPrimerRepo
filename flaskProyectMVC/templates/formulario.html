@@ -1,0 +1,74 @@
+{% extends "plantillas.html" %}
+
+{% block body %}
+<div class="row">
+
+    <!-- Columna: Formulario -->
+    <div class="col-md-5">
+        <h4 class="display-5 text-primary mt-5 mb-4">Formulario de Registro de Álbum</h4>
+
+        <!-- Mostrar mensajes flash -->
+        {% with mensajes = get_flashed_messages() %}
+            {% if mensajes %}
+                <div class="alert alert-info">
+                    <ul>
+                        {% for mensaje in mensajes %}
+                            <li>{{ mensaje }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulario principal -->
+        <form method="POST" action="{{ url_for('album.registrar') }}" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre del Álbum</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="artista" class="form-label">Artista</label>
+                <input type="text" class="form-control" id="artista" name="artista" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="genero" class="form-label">Género</label>
+                <input type="text" class="form-control" id="genero" name="genero" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="fecha_lanzamiento" class="form-label">Fecha de lanzamiento</label>
+                <input type="date" class="form-control" id="fecha_lanzamiento" name="fecha_lanzamiento" required>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success">Registrar Álbum</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Columna: Tabla de Álbumes -->
+    <div class="col-md-7">
+        <h2 class="display-5 text-primary mt-5 mb-5">Álbums Guardados</h2>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Álbum</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alb in albums %}
+                <tr>
+                    <td>{{ alb.0 }}</td>
+                    <td><a href="/detalle/{{ alb.0 }}">{{ alb.1 }}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
